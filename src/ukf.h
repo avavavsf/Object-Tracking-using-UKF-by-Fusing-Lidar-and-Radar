@@ -61,17 +61,41 @@ public:
   ///* Augmented state dimension
   int n_aug_;
 
+  ///* set radar measurement dimension, radar can measure r, phi, and r_dot
+  int n_radar_;
+
+  ///* set laser measurement dimension, laser can measure px and py
+  int n_laser_;
+
   ///* Sigma point spreading parameter
   double lambda_;
 
-  ///* Sigma point spreading parameter
-  double lambda_aug;
+  /// *create augment sigma point matrix
+  MatrixXd Xsig_aug_;
 
   ///* the current NIS for radar
   double NIS_radar_;
 
   ///* the current NIS for laser
   double NIS_laser_;
+
+  /// *matrix for sigma points in radar measurement space
+  MatrixXd radar_sig_;
+
+  /// *matrix for sigma points in laser measurement space
+  MatrixXd laser_sig_;
+
+  /// *mean predicted radar measurement
+  VectorXd radar_pred_;
+
+  /// *mean predicted laser measurement
+  VectorXd laser_pred_;
+
+  /// * radar measurement covariance matrix
+  MatrixXd radar_S_;
+
+  /// * laser measurement covariance matrix
+  MatrixXd laser_S_;
 
   /**
    * Constructor
@@ -83,16 +107,18 @@ public:
    */
   virtual ~UKF();
 
-  void GenerateSigmaPoints(MatrixXd* Xsig_out);
-  void AugmentedSigmaPoints(MatrixXd* Xsig_out);
-  void SigmaPointPrediction(MatrixXd* Xsig_out);
-  void PredictMeanAndCovariance(VectorXd* x_pred, MatrixXd* P_pred);
+  //void GenerateSigmaPoints(MatrixXd* Xsig_out);
+  void AugmentedSigmaPoints();
+  void SigmaPointPrediction(double delta_t);
+  void PredictMeanAndCovariance();
+  void PredictRadarMeasurement();
+  void PredictLaserMeasurement();
 
   /**
    * ProcessMeasurement
    * @param meas_package The latest measurement data of either radar or laser
    */
-  void ProcessMeasurement(MeasurementPackage meas_package);
+  void ProcessMeasurement(MeasurementPackage measurement_pack);
 
   /**
    * Prediction Predicts sigma points, the state, and the state covariance
