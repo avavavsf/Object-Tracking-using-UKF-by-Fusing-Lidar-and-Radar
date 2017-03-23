@@ -88,6 +88,12 @@ UKF::UKF() {
 
   //laser measurement covariance matrix
   laser_S_ = MatrixXd(n_laser_,n_laser_);
+
+  // Radar NIS
+  radar_nis_ = 0;
+
+  // laser NIS
+  laser_nis_ = 0;
 }
 
 UKF::~UKF() {}
@@ -362,6 +368,9 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   //residual
   VectorXd z_diff = z - radar_pred_;
 
+  //Calculate radar NIS
+  radar_nis_ = z_diff.transpose()*radar_S_.inverse()*z_diff;
+
   //angle normalization
   while (z_diff(1)> M_PI) z_diff(1)-=2.*M_PI;
   while (z_diff(1)<-M_PI) z_diff(1)+=2.*M_PI;
@@ -468,6 +477,9 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
   //residual
   VectorXd z_diff = z - laser_pred_;
 
+  //Calculate laser NIS
+  laser_nis_ = z_diff.transpose()*laser_S_.inverse()*z_diff;
+
   //update state mean and covariance matrix
   x_ = x_ + K * z_diff;
   P_ = P_ - K*laser_S_*K.transpose();
@@ -555,6 +567,7 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
   if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
     // Radar updates
     if (use_radar_) {
+      PredictRadarMeasurement();
       UpdateRadar(measurement_pack);
       cout << "radar update" <<endl;
     }
@@ -562,6 +575,7 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
   } else {
     // Laser updates
     if (use_laser_) {
+      PredictLaserMeasurement();
       UpdateLidar(measurement_pack);
       cout << "laser update" <<endl;
     }

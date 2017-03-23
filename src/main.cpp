@@ -151,19 +151,23 @@ int main(int argc, char* argv[]) {
 
     // output the measurements
     if (measurement_pack_list[k].sensor_type_ == MeasurementPackage::LASER) {
-      // output the measurements
+      // output the measurements      
+      out_file_ << measurement_pack_list[k].raw_measurements_(0) << "\t";// p1 - meas
+      out_file_ << measurement_pack_list[k].raw_measurements_(1) << "\t";// p2 - meas
 
-      // p1 - meas
-      out_file_ << measurement_pack_list[k].raw_measurements_(0) << "\t";
+      // output the NIS value
+      out_file_ << ukf.laser_nis_ << "\t";
 
-      // p2 - meas
-      out_file_ << measurement_pack_list[k].raw_measurements_(1) << "\t";
     } else if (measurement_pack_list[k].sensor_type_ == MeasurementPackage::RADAR) {
       // output the measurements in the cartesian coordinates
       float ro = measurement_pack_list[k].raw_measurements_(0);
       float phi = measurement_pack_list[k].raw_measurements_(1);
       out_file_ << ro * cos(phi) << "\t"; // p1_meas
       out_file_ << ro * sin(phi) << "\t"; // p2_meas
+
+      // output the NIS value
+      out_file_ << ukf.radar_nis_ << "\t";
+
     }
 
     // output the ground truth packages

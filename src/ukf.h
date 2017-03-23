@@ -52,6 +52,12 @@ public:
   ///* Radar measurement noise standard deviation radius change in m/s
   double std_radrd_ ;
 
+  ///* Radar NIS
+  double radar_nis_;
+
+  ///* laser NIS
+  double laser_nis_;
+
   ///* Weights of sigma points
   VectorXd weights_;
 
