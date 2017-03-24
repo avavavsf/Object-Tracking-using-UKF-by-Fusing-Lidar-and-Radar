@@ -3,7 +3,9 @@
 #include "Eigen/Dense"
 #include <vector>
 #include "ukf.h"
+#include "tools.h"
 #include "measurement_package.h"
+#include "ground_truth_package.h"
 #include <fstream>
 #include <sstream>
 #include <stdlib.h>
@@ -184,6 +186,8 @@ int main(int argc, char* argv[]) {
 
   // compute the accuracy (RMSE)
   Tools tools;
+  cout << "estimations.size()" << estimations.size() <<endl;
+  cout <<"ground_truth.size()" << ground_truth.size() <<endl;
   cout << "Accuracy - RMSE:" << endl << tools.CalculateRMSE(estimations, ground_truth) << endl;
 
   // close files
