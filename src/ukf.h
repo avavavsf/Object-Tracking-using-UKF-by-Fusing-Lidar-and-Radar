@@ -116,7 +116,6 @@ public:
    */
   virtual ~UKF();
 
-  //void GenerateSigmaPoints(MatrixXd* Xsig_out);
   void AugmentedSigmaPoints();
   void SigmaPointPrediction(double delta_t);
   void PredictMeanAndCovariance();

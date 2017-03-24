@@ -174,26 +174,22 @@ int main(int argc, char* argv[]) {
     double v=sqrt(v1*v1+v2*v2);
     double yaw = atan2(p2,p1);
 
-    out_file_ << p1 << "\t"; // p1
-    out_file_ << p2 << "\t"; // p2
-    out_file_ << v << "\t"; // v
-    out_file_ << yaw << "\t"; // yaw
-    out_file_ << v1 << "\t"; // v1
-    out_file_ << v2 << "\t"; // v2
+    out_file_ << p1 << "\t"; // p1_gt
+    out_file_ << p2 << "\t"; // p2_gt
+    out_file_ << v << "\t"; // v_gt
+    out_file_ << yaw << "\t"; // yaw_gt
+    out_file_ << v1 << "\t"; // v1_gt
+    out_file_ << v2 << "\t"; // v2_gt
     out_file_ << ukf.laser_nis_ << "\t"; //NIS_laser
     out_file_ << ukf.radar_nis_ << "\n"; ////NIS_radar
-
 
     estimations.push_back(ukf.x_);
     ground_truth.push_back(gt_pack_list[k].gt_values_);
 
-    //out_file_ << "\n";
   }
 
   // compute the accuracy (RMSE)
   Tools tools;
-  cout << "estimations.size()" << estimations.size() <<endl;
-  cout <<"ground_truth.size()" << ground_truth.size() <<endl;
   cout << "Accuracy - RMSE:" << endl << tools.CalculateRMSE(estimations, ground_truth) << endl;
 
   // close files
