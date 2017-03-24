@@ -73,6 +73,9 @@ public:
   ///* set laser measurement dimension, laser can measure px and py
   int n_laser_;
 
+  ///* previous timestamp
+  double previous_timestamp_;
+
   ///* Sigma point spreading parameter
   double lambda_;
 
@@ -137,13 +140,13 @@ public:
    * Updates the state and the state covariance matrix using a laser measurement
    * @param meas_package The measurement at k+1
    */
-  void UpdateLidar(MeasurementPackage meas_package);
+  void UpdateLidar(MeasurementPackage meas_pack);
 
   /**
    * Updates the state and the state covariance matrix using a radar measurement
    * @param meas_package The measurement at k+1
    */
-  void UpdateRadar(MeasurementPackage meas_package);
+  void UpdateRadar(MeasurementPackage meas_pack);
 };
 
 #endif /* UKF_H */
