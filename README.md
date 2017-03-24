@@ -1,7 +1,49 @@
 # Unscented Kalman Filter Project Starter Code
-Self-Driving Car Engineer Nanodegree Program
+[//]: # (Image References)
+[image1]: ./output_images/track1.png
+[image2]: ./output_images/track1_radarNIS.png
+[image3]: ./output_images/track1_laserNIS.png
+[image4]: ./output_images/track2.png
+[image5]: ./output_images/track3_radarNIS.png
+[image6]: ./output_images/track2_laserNIS.png
+[image7]: ./output_images/ctrv.png
 
----
+## Workflow
+The workflow is the same as the [EKF fusion project](https://github.com/ymshao/Object-Tracking-using-EKF-by-Fusing-Lidar-and-Radar/blob/master/README.md), but there are two differences:
+  * UKF used instead of EKF to fusion Radar and Laser data.
+  * ctrv model used as the process model with 5 parametes in the state vector.
+![alt text][image7]
+## Input data format
+Input data is located in the "data" directory. Here is the data format description.
+```
+#Input file format:
+#L(for laser) meas_px meas_py timestamp gt_px gt_py gt_vx gt_vy
+#R(for radar) meas_rho meas_phi meas_rho_dot timestamp gt_px gt_py gt_vx gt_vy
+-----------------------------
+Example
+-----------------------------
+R	8.60363	0.0290616	-2.99903	1477010443399637	8.6	0.25	-3.00029	0
+L	8.45	0.25	1477010443349642	8.45	0.25	-3.00027	0 
+
+```
+
+## Results
+We have generated two simulated tracking data to test our implementation, here is the tracking results. We noticed that the UKF fusion resutls is more smooth than [EKF](https://github.com/ymshao/Object-Tracking-using-EKF-by-Fusing-Lidar-and-Radar/blob/master/README.md) at the circle part, and we archive a smaller RMSE values. 
+
+We also found that it is difficult to archive the best RMSE and the best filter consistancy (indicated by the NIS figures), by only adjusting the process noise parametes.In this project, we scrifice the NIS to archive a little bit to archive best RMSE values.
+  * Track 1.       px, py, vx, and vy RMSE: [0.0740189, 0.0837208, 0.583002, 0.586191] meters
+![alt text][image1]
+  * Track 1 Radar NIS
+![alt text][image2]
+   * Track 1 Laser NIS
+![alt text][image3]
+  
+  * Track 2.       px, py, vx, and vy RMSE: [0.197399, 0.189804, 0.548703, 0.543699] meters
+![alt text][image4]
+  * Track 2 Radar NIS
+![alt text][image5]
+  * Track 2 Laser NIS
+![alt text][image6]
 
 ## Dependencies
 
@@ -18,29 +60,4 @@ Self-Driving Car Engineer Nanodegree Program
    some sample inputs in 'data/'.
     - eg. `./UnscentedKF ../data/sample-laser-radar-measurement-data-1.txt output.txt`
 
-## Editor Settings
 
-We've purposefully kept editor configuration files out of this repo in order to
-keep it as simple and environment agnostic as possible. However, we recommend
-using the following settings:
-
-* indent using spaces
-* set tab width to 2 spaces (keeps the matrices in source code aligned)
-
-## Code Style
-
-Please stick to [Google's C++ style guide](https://google.github.io/styleguide/cppguide.html) as much as possible.
-
-## Generating Additional Data
-
-This is optional!
-
-If you'd like to generate your own radar and lidar data, see the
-[utilities repo](https://github.com/udacity/CarND-Mercedes-SF-Utilities) for
-Matlab scripts that can generate additional data.
-
-## Project Instructions and Rubric
-
-This information is only accessible by people who are already enrolled in Term 2
-of CarND. If you are enrolled, see [the project page](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/0949fca6-b379-42af-a919-ee50aa304e6a/lessons/c3eb3583-17b2-4d83-abf7-d852ae1b9fff/concepts/4d0420af-0527-4c9f-a5cd-56ee0fe4f09e)
-for instructions and the project rubric.
